@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+	<specVersion>
+		<major>1</major>
+		<minor>0</minor>
+	</specVersion>
+	<device>
+		<deviceType>urn:schemas-chrisbirkinshaw-me-uk:device:HVAC_ZoneThermostat:1</deviceType>
+		<Category_Num>5</Category_Num>
+		<handleChildren>0</handleChildren>
+		<friendlyName>FHEM FHT Thermostat</friendlyName>
+		<manufacturer>FHEM</manufacturer>
+		<manufacturerURL>http://www.fhem.de</manufacturerURL>
+		<staticJson>D_FHEM_FHT_ZoneThermostat1.json</staticJson>
+		<serviceList>
+			<service>
+				<Optional />
+				<serviceType>urn:schemas-upnp-org:service:HVAC_FanOperatingMode:1</serviceType>
+				<serviceId>urn:upnp-org:serviceId:HVAC_FanOperatingMode1</serviceId>
+				<SCPDURL>S_HVAC_FanOperatingMode1.xml</SCPDURL>
+			</service>
+			<service>
+				<serviceType>urn:micasaverde-com:serviceId:HVAC_OperatingState:1</serviceType>
+				<serviceId>urn:micasaverde-com:serviceId:HVAC_OperatingState1</serviceId>
+				<SCPDURL>S_HVAC_OperatingState1.xml</SCPDURL>
+			</service>
+			<service>
+				<serviceType>urn:schemas-upnp-org:service:HVAC_UserOperatingMode:1</serviceType>
+				<serviceId>urn:upnp-org:serviceId:HVAC_UserOperatingMode1</serviceId>
+				<SCPDURL>S_HVAC_UserOperatingMode1.xml</SCPDURL>
+			</service>
+			<service>
+				<Optional />
+				<serviceType>urn:schemas-upnp-org:service:FanSpeed:1</serviceType>
+				<serviceId>urn:upnp-org:serviceId:FanSpeed1</serviceId>
+				<SCPDURL>S_FanSpeed1.xml</SCPDURL>
+			</service>
+			<service>
+				<serviceType>urn:schemas-upnp-org:service:TemperatureSensor:1</serviceType>
+				<serviceId>urn:upnp-org:serviceId:TemperatureSensor1</serviceId>
+				<SCPDURL>S_TemperatureSensor1.xml</SCPDURL>
+			</service>
+			<service>
+				<serviceType>urn:schemas-upnp-org:service:TemperatureSetpoint:1</serviceType>
+				<serviceId>urn:upnp-org:serviceId:TemperatureSetpoint1_Heat</serviceId>
+				<SCPDURL>S_TemperatureSetpoint1.xml</SCPDURL>
+			</service>
+			<service>
+				<serviceType>urn:schemas-upnp-org:service:SwitchPower:1</serviceType>
+				<serviceId>urn:upnp-org:serviceId:SwitchPower1</serviceId>
+				<SCPDURL>S_SwitchPower1.xml</SCPDURL>
+			</service>
+			<service>
+				<serviceType>urn:schemas-micasaverde-com:service:HaDevice:1</serviceType>
+				<serviceId>urn:micasaverde-com:serviceId:HaDevice1</serviceId>
+				<SCPDURL>S_HaDevice1.xml</SCPDURL>
+			</service>
+		</serviceList>
+ 	
+		<implementationList>
+			<implementationFile>I_FHEM_FHT_ZoneThermostat1.xml</implementationFile>
+		</implementationList>
+
+	</device>
+</root>

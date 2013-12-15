@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!-- 
+ Vera Plugin for FHEM/FHT thermostat
+
+ Heavily based on Hugh Evans MiOS Plugin for Radio Thermostat Corporation of America, Inc. Wi-Fi Thermostats (Copyright 2012)
+
+ Modifications for FHEM/FHT Copyright 2013 Chris Birkinshaw
+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<implementation>
+	<settings>
+		<protocol>raw</protocol>
+	</settings>
+	<functions>
+		-- Using "require" to access compressed modules doesn't work if the 
+		-- module is declared without using the "module" function.
+		-- (see http://bugs.micasaverde.com/view.php?id=2276 )
+		--
+		-- We work around this with a shell script that executes pluto-lzo
+		-- to decompress the module. The temp file is used to
+		-- avoid a race condition when multiple instances of this module
+		-- start at the same time. (to prevent one instance from loading a 
+		-- partially decompressed file from another instance)
+
+		local decompressScript = [[
+		decompress_lzo_file() {
+			SRC_FILE=/etc/cmh-ludl/$1.lzo
+			DEST_FILE=/etc/cmh-ludl/$1
+			if [ ! -e $DEST_FILE -o $SRC_FILE -nt $DEST_FILE ]
+			then
+				TEMP_FILE=$(mktemp)
+				pluto-lzo d $SRC_FILE $TEMP_FILE
+				mv $TEMP_FILE $DEST_FILE
+			fi
+		}
+		]]
+
+		os.execute(decompressScript .. "decompress_lzo_file L_FHEM_FHT_core.lua")
+		os.execute(decompressScript .. "decompress_lzo_file L_FHEM_FHT_log.lua")
+
+		core = require("L_FHEM_FHT_core")
+		function thermostatInitialize(lul_device)
+			core.thermostatInitialize(lul_device)
+		end
+	</functions>
+	<startup>thermostatInitialize</startup>
+	<actionList>
+		<action>
+			<serviceId>urn:upnp-org:serviceId:TemperatureSetpoint1_Heat</serviceId>
+			<name>SetCurrentSetpoint</name>
+			<job>
+				return core.updateSetpoint(lul_settings.NewCurrentSetpoint)	
+			</job>
+		</action>
+	</actionList>
+</implementation>
