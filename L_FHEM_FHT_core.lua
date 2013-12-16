@@ -48,6 +48,8 @@ local g_ipPort = "8083"
 local g_nextPollTime = 0
 local g_deviceId = nil
 local g_ipAddress = nil
+local fanStatus = "Off"
+local modeState = "Heating"
 
 --------------------------------
 ------- Local Functions --------
@@ -157,11 +159,13 @@ local function retrieveThermostatStatus()
 	-- ModeState should be Heating or Idle (from MCV spec) but FHT reports % actuator value
 
 	if actuator == "0%" then
-		local fanStatus = "Off"
-		local modeState = "Idle"
+		luup.log ("Actuator is 0%, therefore FanStatus is Off and ModeState is Idle")
+		fanStatus = "Off"
+		modeState = "Idle"
 	else
-		local fanStatus = "On"
-		local modeState = "Heating"
+		luup.log ("Actuator is not 0%, therefore FanStatus is On and ModeState is Heating")
+		fanStatus = "On"
+		modeState = "Heating"
 	end
 
 	luup.variable_set(FAN_MODE_SID, "FanStatus", fanStatus, g_deviceId)
